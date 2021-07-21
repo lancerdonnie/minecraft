@@ -1,6 +1,5 @@
 <script>
   export let cell;
-  export let number;
   export let minesLeft;
   export let gameOver;
 
@@ -37,7 +36,7 @@
     // if (number > 0 && clicked) return number;
     // return '';
   })()} -->
-  {isBomb ? '' : value}
+  {isBomb ? '' : value || ''}
 </div>
 
 <style>

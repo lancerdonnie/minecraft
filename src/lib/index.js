@@ -1,15 +1,12 @@
-import { test1 } from './text';
-
 export const getCells = (bombs, boardSize) => {
   const numbers = random(bombs, boardSize);
-  // return Array.from(Array(boardSize)).map((e, i) => {
-  //   return {
-  //     index: i,
-  //     isBomb: numbers.includes(i),
-  //     value: 0,
-  //   };
-  // });
-  return test1;
+  return Array.from(Array(boardSize)).map((_, i) => {
+    return {
+      index: i,
+      isBomb: numbers.includes(i),
+      value: 0,
+    };
+  });
 };
 
 export const random = (bombs, boardSize) => {
