@@ -8,10 +8,8 @@
   export let boardSize;
 
   let flagged = false;
-  let { isBomb, value, clicked, index } = cell;
 
   const handleEmptySpace = (i) => {
-    console.log(i);
     cells[i].clicked = true;
     const right = cells[i + 1];
     const top = cells[i - board];
@@ -135,12 +133,12 @@
       handleEmptySpace(topLeft.index);
     if (!bottomLeft.isBomb && !bottomLeft.value && !bottomLeft.clicked)
       handleEmptySpace(bottomLeft.index);
-    // console.log(cells);
   };
 
   const handleClick = () => {
-    clicked = true;
-    if (isBomb) {
+    cell.clicked = true;
+
+    if (cell.isBomb) {
       flagged = true;
       gameOver = true;
       //reveal all mines
@@ -153,13 +151,13 @@
       won = true;
       return;
     }
-    if (!value) {
-      handleEmptySpace(index);
+    if (!cell.value) {
+      handleEmptySpace(cell.index);
     }
   };
 
   const handleContextClick = () => {
-    if (clicked) return;
+    if (cell.clicked) return;
     flagged = !flagged;
     if (flagged) minesLeft--;
     else minesLeft++;
@@ -171,13 +169,13 @@
   on:contextmenu|preventDefault={handleContextClick}
   class="cell"
   class:flagged
-  class:clicked
+  class:clicked={cell.clicked}
 >
   {(() => {
-    if (isBomb) return '';
-    // if (clicked) return value || '';
-    // return '';
-    return value || '';
+    if (cell.isBomb) return '';
+    if (cell.clicked) return cell.value || '';
+    return '';
+    // return cell.value || '';
   })()}
 </div>
 
