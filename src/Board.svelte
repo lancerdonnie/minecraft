@@ -120,7 +120,6 @@
     on:click|capture={handleBoardClick}
     on:contextmenu|capture={handleBoardClick}
   >
-    <!-- n={calculateNumber(i, cell.isBomb) || ''} -->
     {#each cells as cell, i}
       <Cell
         {cell}
