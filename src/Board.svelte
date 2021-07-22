@@ -2,12 +2,13 @@
   import Cell from './Cell.svelte';
   import { getCells } from './lib';
 
-  let board = 10;
+  export let board = 10;
   let boardSize = board * board;
   let bombs = 15;
   let cells = getCells(bombs, boardSize);
   let minesLeft = bombs;
   let gameOver = false;
+  let won = false;
 
   const calculateNumber2 = (i) => {
     const right = cells[i + 1];
@@ -34,7 +35,8 @@
       return;
     }
     // bottom left
-    if (i === boardSize - (board - 1)) {
+    // if (i === boardSize - (board - 1)) {
+    if (i === boardSize - board) {
       top.value++;
       right.value++;
       topRight.value++;
@@ -104,7 +106,9 @@
 
 <div>
   <div>
-    {#if !gameOver}
+    {#if won}
+      <div>Congratulations!!! You won</div>
+    {:else if !gameOver}
       <div>Mines Left: {minesLeft}</div>
     {:else}
       <div>Game Over</div>
@@ -112,12 +116,21 @@
   </div>
   <div
     class="board"
+    style="--columns:{board}"
     on:click|capture={handleBoardClick}
     on:contextmenu|capture={handleBoardClick}
   >
     <!-- n={calculateNumber(i, cell.isBomb) || ''} -->
     {#each cells as cell, i}
-      <Cell bind:minesLeft bind:gameOver {cell} />
+      <Cell
+        {cell}
+        bind:minesLeft
+        bind:gameOver
+        bind:won
+        bind:cells
+        bind:board
+        bind:boardSize
+      />
     {/each}
   </div>
 </div>
@@ -125,11 +138,10 @@
 <style>
   .board {
     margin: auto;
-    width: 400px;
-    height: 400px;
+    width: max-content;
     display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    grid-template-rows: repeat(10, 1fr);
+    grid-template-columns: repeat(var(--columns), 1fr);
+    grid-template-rows: repeat(var(--columns), 1fr);
     border: 1px solid black;
   }
 </style>

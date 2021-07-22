@@ -1,10 +1,13 @@
+import testData from './testData';
 export const getCells = (bombs, boardSize) => {
   const numbers = random(bombs, boardSize);
+  return testData;
   return Array.from(Array(boardSize)).map((_, i) => {
     return {
       index: i,
       isBomb: numbers.includes(i),
       value: 0,
+      clicked: false,
     };
   });
 };
