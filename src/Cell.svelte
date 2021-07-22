@@ -13,10 +13,10 @@
   let badFlag = null;
 
   const handleEmptySpace = (i) => {
+    if (cells[i].clicked) return;
     cells[i].clicked = true;
     uncovered++;
-    if (cells[i].value) return;
-    if (cells[i].isBomb) return;
+    if (cells[i].value || cells[i].isBomb) return;
     const right = cells[i + 1];
     const top = cells[i - board];
     const left = cells[i - 1];
@@ -27,78 +27,78 @@
     const topLeft = cells[i - 1 - board];
     //top left
     if (i === 0) {
-      if (!right.clicked) handleEmptySpace(right.index);
-      if (!right.clicked) handleEmptySpace(right.index);
-      if (!bottom.clicked) handleEmptySpace(bottom.index);
-      if (!bottomRight.clicked) handleEmptySpace(bottomRight.index);
+      handleEmptySpace(right.index);
+      handleEmptySpace(right.index);
+      handleEmptySpace(bottom.index);
+      handleEmptySpace(bottomRight.index);
       return;
     }
     //top right
     if (i === board - 1) {
-      if (!left.clicked) handleEmptySpace(left.index);
-      if (!bottom.clicked) handleEmptySpace(bottom.index);
-      if (!bottomLeft.clicked) handleEmptySpace(bottomLeft.index);
+      handleEmptySpace(left.index);
+      handleEmptySpace(bottom.index);
+      handleEmptySpace(bottomLeft.index);
       return;
     }
     //   // bottom left
     if (i === boardSize - board) {
-      if (!top.clicked) handleEmptySpace(top.index);
-      if (!right.clicked) handleEmptySpace(right.index);
-      if (!topRight.clicked) handleEmptySpace(topRight.index);
+      handleEmptySpace(top.index);
+      handleEmptySpace(right.index);
+      handleEmptySpace(topRight.index);
       return;
     }
     // bottom right
     if (i === boardSize - 1) {
-      if (!top.clicked) handleEmptySpace(top.index);
-      if (!left.clicked) handleEmptySpace(left.index);
-      if (!topLeft.clicked) handleEmptySpace(topLeft.index);
+      handleEmptySpace(top.index);
+      handleEmptySpace(left.index);
+      handleEmptySpace(topLeft.index);
       return;
     }
     //top
     if (i < board) {
-      if (!bottom.clicked) handleEmptySpace(bottom.index);
-      if (!left.clicked) handleEmptySpace(left.index);
-      if (!right.clicked) handleEmptySpace(right.index);
-      if (!bottomLeft.clicked) handleEmptySpace(bottomLeft.index);
-      if (!bottomRight.clicked) handleEmptySpace(bottomRight.index);
+      handleEmptySpace(bottom.index);
+      handleEmptySpace(left.index);
+      handleEmptySpace(right.index);
+      handleEmptySpace(bottomLeft.index);
+      handleEmptySpace(bottomRight.index);
       return;
     }
     //bottom
     if (i >= boardSize - board) {
-      if (!top.clicked) handleEmptySpace(top.index);
-      if (!left.clicked) handleEmptySpace(left.index);
-      if (!right.clicked) handleEmptySpace(right.index);
-      if (!topLeft.clicked) handleEmptySpace(topLeft.index);
-      if (!topRight.clicked) handleEmptySpace(topRight.index);
+      handleEmptySpace(top.index);
+      handleEmptySpace(left.index);
+      handleEmptySpace(right.index);
+      handleEmptySpace(topLeft.index);
+      handleEmptySpace(topRight.index);
       return;
     }
     //left
     if (i % board === 0) {
-      if (!top.clicked) handleEmptySpace(top.index);
-      if (!bottom.clicked) handleEmptySpace(bottom.index);
-      if (!right.clicked) handleEmptySpace(right.index);
-      if (!bottomRight.clicked) handleEmptySpace(bottomRight.index);
-      if (!topRight.clicked) handleEmptySpace(topRight.index);
+      handleEmptySpace(top.index);
+      handleEmptySpace(bottom.index);
+      handleEmptySpace(right.index);
+      handleEmptySpace(bottomRight.index);
+      handleEmptySpace(topRight.index);
       return;
     }
     //right
     if ((i + 1) % board === 0) {
-      if (!top.clicked) handleEmptySpace(top.index);
-      if (!bottom.clicked) handleEmptySpace(bottom.index);
-      if (!left.clicked) handleEmptySpace(left.index);
-      if (!topLeft.clicked) handleEmptySpace(topLeft.index);
-      if (!bottomLeft.clicked) handleEmptySpace(bottomLeft.index);
+      handleEmptySpace(top.index);
+      handleEmptySpace(bottom.index);
+      handleEmptySpace(left.index);
+      handleEmptySpace(topLeft.index);
+      handleEmptySpace(bottomLeft.index);
       return;
     }
     // any
-    !top.clicked && handleEmptySpace(top.index);
-    !bottom.clicked && handleEmptySpace(bottom.index);
-    !left.clicked && handleEmptySpace(left.index);
-    !right.clicked && handleEmptySpace(right.index);
-    !bottomRight.clicked && handleEmptySpace(bottomRight.index);
-    !topRight.clicked && handleEmptySpace(topRight.index);
-    !topLeft.clicked && handleEmptySpace(topLeft.index);
-    !bottomLeft.clicked && handleEmptySpace(bottomLeft.index);
+    handleEmptySpace(top.index);
+    handleEmptySpace(bottom.index);
+    handleEmptySpace(left.index);
+    handleEmptySpace(right.index);
+    handleEmptySpace(bottomRight.index);
+    handleEmptySpace(topRight.index);
+    handleEmptySpace(topLeft.index);
+    handleEmptySpace(bottomLeft.index);
   };
 
   const handleClick = () => {
