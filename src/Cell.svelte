@@ -6,12 +6,15 @@
   export let won;
   export let board;
   export let boardSize;
+  export let totalClicked;
+  export let uncovered;
 
   let flagged = false;
   let badFlag = null;
 
   const handleEmptySpace = (i) => {
     cells[i].clicked = true;
+    uncovered++;
     if (cells[i].value) return;
     if (cells[i].isBomb) return;
     const right = cells[i + 1];
@@ -109,14 +112,12 @@
       handleEmptySpace(cell.index);
     } else {
       cell.clicked = true;
+      uncovered++;
     }
 
-    const wonGame = cells.every(({ isBomb, clicked }) => isBomb || clicked);
-
-    if (wonGame) {
+    if (uncovered >= totalClicked) {
       gameOver = true;
       won = true;
-      return;
     }
   };
 

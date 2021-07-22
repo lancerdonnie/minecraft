@@ -9,6 +9,8 @@
   let minesLeft = bombs;
   let gameOver = false;
   let won = false;
+  let totalClicked = boardSize - bombs;
+  let uncovered = 0;
 
   const calculateNumber2 = (i) => {
     const right = cells[i + 1];
@@ -129,6 +131,8 @@
         bind:cells
         bind:board
         bind:boardSize
+        bind:totalClicked
+        bind:uncovered
       />
     {/each}
   </div>
