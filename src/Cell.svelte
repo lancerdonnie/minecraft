@@ -8,6 +8,7 @@
   export let boardSize;
   export let totalClicked;
   export let uncovered;
+  export let size;
 
   let flagged = false;
   let badFlag = null;
@@ -138,6 +139,7 @@
   class="cell"
   class:clicked={cell.clicked}
   class:badFlag
+  style="--size:{size}px"
 >
   {(() => {
     if (cell.isBomb) return '';
@@ -162,8 +164,8 @@
   .cell {
     background-color: #808080;
     border: #eee 1px solid;
-    width: 30px;
-    height: 30px;
+    width: var(--size);
+    height: var(--size);
     cursor: pointer;
   }
   .clicked {

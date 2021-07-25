@@ -2,6 +2,7 @@
   import Cell from './Cell.svelte';
   import { getCells, getlocal } from './lib';
 
+  let size = getlocal('cell') ?? 40;
   let show = false;
   let board = getlocal('board') ?? 10;
   let bombs = getlocal('bombs') ?? 15;
@@ -119,14 +120,21 @@
 
   const setBoard = (e) => {
     let b = e.target.board.value,
-      m = e.target.mines.value;
+      m = e.target.mines.value,
+      c = e.target.cell.value;
+    if (c) {
+      localStorage.cell = c;
+      size = +c;
+    }
     if (isNaN(b) || isNaN(m)) return;
     b = +b;
     m = +m;
     if (b > 100) return;
     localStorage.board = b;
     localStorage.bombs = m;
+
     start(b, m);
+    show = false;
   };
 
   const handleRestart = () => {
@@ -148,12 +156,16 @@
   {#if show}
     <form on:submit|preventDefault={setBoard}>
       <div>
-        <label for="board">Board</label>
-        <input id="board" name="board" type="number" placeholder={board} />
+        <label for="board">Board:</label>
+        <input id="board" name="board" type="number" value={board} />
       </div>
       <div>
-        <label for="mines">Mines</label>
-        <input id="mines" name="mines" type="number" placeholder={bombs} />
+        <label for="mines">Mines:</label>
+        <input id="mines" name="mines" type="number" value={bombs} />
+      </div>
+      <div>
+        <label for="cell">Cell Size:</label>
+        <input id="cell" name="cell" type="number" value={size} />
       </div>
       <div><button type="submit">SET</button></div>
     </form>
@@ -178,6 +190,7 @@
     {#each cells as cell (cell.key)}
       <Cell
         {cell}
+        bind:size
         bind:minesLeft
         bind:gameOver
         bind:won
@@ -204,5 +217,17 @@
   .status {
     margin-bottom: 20px;
     font-weight: bold;
+  }
+
+  label {
+    text-align: right;
+    width: 75px;
+    margin-right: 10px;
+  }
+
+  form > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 </style>
