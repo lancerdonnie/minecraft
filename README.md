@@ -19,4 +19,4 @@ Run this project
 
 ## Live Url
 
-Url: [Minesweeper Ultra](https://https://minesweeperultra.netlify.app/.netlify.app/)
+Url: [Minesweeper Ultra](https://minesweeperultra.netlify.app)

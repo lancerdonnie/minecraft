@@ -9,9 +9,7 @@
 <style>
   main {
     text-align: center;
-    padding: 1em;
-    max-width: 240px;
-    margin: 0 auto;
+    padding-top: 1em;
   }
 
   @media (min-width: 640px) {
