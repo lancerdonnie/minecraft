@@ -2,7 +2,7 @@
   import Cell from './Cell.svelte';
   import { getCells } from './lib';
 
-  export let board = 10;
+  let board = 10;
   let boardSize = board * board;
   let bombs = 15;
   let cells = getCells(bombs, boardSize);

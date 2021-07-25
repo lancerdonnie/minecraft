@@ -144,6 +144,7 @@
     if (cell.isBomb) return '';
     if (cell.clicked) return cell.value || '';
     return '';
+    // return cell.value;
   })()}
   <img
     alt="flag"
