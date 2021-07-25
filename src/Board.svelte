@@ -1,9 +1,10 @@
 <script>
   import Cell from './Cell.svelte';
-  import { getCells } from './lib';
+  import { getCells, getlocal } from './lib';
 
-  let board = 10;
-  let bombs = 15;
+  let show = false;
+  let board = getlocal('board') ?? 10;
+  let bombs = getlocal('bombs') ?? 15;
   let boardSize = board * board;
   let minesLeft = bombs;
   let totalClicked = boardSize - bombs;
@@ -117,15 +118,47 @@
   };
 
   const setBoard = (e) => {
-    const b = e.target.board.value,
+    let b = e.target.board.value,
       m = e.target.mines.value;
-    if (!b || !m) return;
-    if (b > 1000) return;
-    start(+b, +m);
+    if (isNaN(b) || isNaN(m)) return;
+    b = +b;
+    m = +m;
+    if (b > 100) return;
+    localStorage.board = b;
+    localStorage.bombs = m;
+    start(b, m);
+  };
+
+  const handleRestart = () => {
+    gameOver = false;
+    minesLeft = bombs;
+    totalClicked = boardSize - bombs;
+    won = false;
+    uncovered = 0;
+    cells = getCells(bombs, boardSize);
+    cells.forEach((e) => e.isBomb && calculateNumber(e.index));
   };
 </script>
 
 <div>
+  <button on:click={handleRestart}>restart</button>
+  <button on:click={() => (show = !show)}
+    >{!show ? 'Show' : 'Hide'} Settings</button
+  >
+  {#if show}
+    <form on:submit|preventDefault={setBoard}>
+      <div>
+        <label for="board">Board</label>
+        <input id="board" name="board" type="number" placeholder={board} />
+      </div>
+      <div>
+        <label for="mines">Mines</label>
+        <input id="mines" name="mines" type="number" placeholder={bombs} />
+      </div>
+      <div><button type="submit">SET</button></div>
+    </form>
+  {/if}
+
   <div class="status">
     {#if won}
       <div>Congratulations!!! You won</div>
@@ -135,17 +168,7 @@
       <div>Game Over</div>
     {/if}
   </div>
-  <form on:submit|preventDefault={setBoard}>
-    <div>
-      <label for="board">Board</label>
-      <input id="board" name="board" type="number" placeholder="10" />
-    </div>
-    <div>
-      <label for="mines">Mines</label>
-      <input id="mines" name="mines" type="number" placeholder="15" />
-    </div>
-    <div><button type="submit">SET</button></div>
-  </form>
+
   <div
     class="board"
     style="--columns:{board}"

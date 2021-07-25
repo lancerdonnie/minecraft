@@ -160,10 +160,11 @@
     display: none;
   }
   .cell {
-    background-color: gray;
+    background-color: #808080;
     border: #eee 1px solid;
     width: 30px;
     height: 30px;
+    cursor: pointer;
   }
   .clicked {
     background-color: white;

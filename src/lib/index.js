@@ -38,3 +38,8 @@ const getRandom = (boardSize, numbers) => {
     return rand;
   }
 };
+
+export const getlocal = (item) => {
+  const i = localStorage[item];
+  return i ? +i : undefined;
+};
