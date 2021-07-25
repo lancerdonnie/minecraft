@@ -202,6 +202,7 @@
       />
     {/each}
   </div>
+  <div>Right click or long press to place flag</div>
 </div>
 
 <style>
