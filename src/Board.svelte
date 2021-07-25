@@ -37,7 +37,6 @@
       return;
     }
     // bottom left
-    // if (i === boardSize - (board - 1)) {
     if (i === boardSize - board) {
       top.value++;
       right.value++;

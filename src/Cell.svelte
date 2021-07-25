@@ -14,9 +14,12 @@
 
   const handleEmptySpace = (i) => {
     if (cells[i].clicked) return;
+
     cells[i].clicked = true;
     uncovered++;
+
     if (cells[i].value || cells[i].isBomb) return;
+
     const right = cells[i + 1];
     const top = cells[i - board];
     const left = cells[i - 1];
@@ -25,6 +28,7 @@
     const bottomLeft = cells[i - 1 + board];
     const topRight = cells[i + 1 - board];
     const topLeft = cells[i - 1 - board];
+
     //top left
     if (i === 0) {
       handleEmptySpace(right.index);
@@ -103,7 +107,7 @@
 
   const handleClick = () => {
     if (cell.isBomb) {
-      flagged = true;
+      // flagged = true;
       gameOver = true;
       badFlag = cell.index;
       return;
@@ -133,7 +137,6 @@
   on:click|once={handleClick}
   on:contextmenu|preventDefault={handleContextClick}
   class="cell"
-  class:flagged={flagged || (gameOver && cell.isBomb)}
   class:clicked={cell.clicked}
   class:badFlag
 >
@@ -142,9 +145,20 @@
     if (cell.clicked) return cell.value || '';
     return '';
   })()}
+  <img
+    alt="flag"
+    src="flag.png"
+    class:flagged={(flagged || (gameOver && cell.isBomb)) && !badFlag}
+  />
+  <img alt="mine" src="mine.png" class:badFlag />
 </div>
 
 <style>
+  img {
+    height: 100%;
+    width: 100%;
+    display: none;
+  }
   .cell {
     background-color: gray;
     border: #eee 1px solid;
@@ -155,9 +169,10 @@
     background-color: white;
   }
   .flagged {
-    background-color: red;
+    display: initial;
   }
   .badFlag {
-    background-color: yellow;
+    display: initial;
+    position: relative;
   }
 </style>
