@@ -1,6 +1,4 @@
 import { nanoid } from 'nanoid';
-import testData from './testData';
-let f = false;
 
 export const getCells = (bombs, boardSize) => {
   const numbers = random(bombs, boardSize);
@@ -14,9 +12,7 @@ export const getCells = (bombs, boardSize) => {
     };
   });
 
-  if (!f) return cells;
-  f = true;
-  return testData;
+  return cells;
 };
 
 export const random = (bombs, boardSize) => {
