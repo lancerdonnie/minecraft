@@ -11,12 +11,12 @@ Svelte
 Run this project
 
 ```bash
-  git clone https://github.com/lancerdonnie/minecraft
-  cd minecraft
+  git clone https://github.com/lancerdonnie/minesweeper
+  cd minesweeper
   npm install
   npm run dev
 ```
 
 ## Live Url
 
-Url: [Minesweeper Ultra](https://minecraftultra.netlify.app/)
+Url: [Minesweeper Ultra](https://https://minesweeperultra.netlify.app/.netlify.app/)
