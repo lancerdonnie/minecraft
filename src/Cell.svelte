@@ -107,7 +107,6 @@
 
   const handleClick = () => {
     if (cell.isBomb) {
-      // flagged = true;
       gameOver = true;
       badFlag = cell.index;
       return;

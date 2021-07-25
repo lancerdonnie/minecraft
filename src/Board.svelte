@@ -3,16 +3,17 @@
   import { getCells } from './lib';
 
   let board = 10;
-  let boardSize = board * board;
   let bombs = 15;
-  let cells = getCells(bombs, boardSize);
+  let boardSize = board * board;
   let minesLeft = bombs;
-  let gameOver = false;
-  let won = false;
   let totalClicked = boardSize - bombs;
-  let uncovered = 0;
+  let gameOver = false,
+    won = false,
+    uncovered = 0;
+  let cells = getCells(bombs, boardSize);
+  cells.forEach((e) => e.isBomb && calculateNumber(e.index));
 
-  const calculateNumber2 = (i) => {
+  function calculateNumber(i) {
     const right = cells[i + 1];
     const top = cells[i - board];
     const left = cells[i - 1];
@@ -96,17 +97,36 @@
     topRight.value++;
     topLeft.value++;
     bottomLeft.value++;
-  };
+  }
 
-  cells.forEach((e) => e.isBomb && calculateNumber2(e.index));
+  const start = (b, m) => {
+    board = b;
+    bombs = m;
+    boardSize = board * board;
+    minesLeft = bombs;
+    totalClicked = boardSize - bombs;
+    gameOver = false;
+    won = false;
+    uncovered = 0;
+    cells = getCells(bombs, boardSize);
+    cells.forEach((e) => e.isBomb && calculateNumber(e.index));
+  };
 
   const handleBoardClick = (e) => {
     if (gameOver) e.stopPropagation();
   };
+
+  const setBoard = (e) => {
+    const b = e.target.board.value,
+      m = e.target.mines.value;
+    if (!b || !m) return;
+    if (b > 1000) return;
+    start(+b, +m);
+  };
 </script>
 
 <div>
-  <div>
+  <div class="status">
     {#if won}
       <div>Congratulations!!! You won</div>
     {:else if !gameOver}
@@ -115,13 +135,24 @@
       <div>Game Over</div>
     {/if}
   </div>
+  <form on:submit|preventDefault={setBoard}>
+    <div>
+      <label for="board">Board</label>
+      <input id="board" name="board" type="number" placeholder="10" />
+    </div>
+    <div>
+      <label for="mines">Mines</label>
+      <input id="mines" name="mines" type="number" placeholder="15" />
+    </div>
+    <div><button type="submit">SET</button></div>
+  </form>
   <div
     class="board"
     style="--columns:{board}"
     on:click|capture={handleBoardClick}
     on:contextmenu|capture={handleBoardClick}
   >
-    {#each cells as cell, i}
+    {#each cells as cell (cell.key)}
       <Cell
         {cell}
         bind:minesLeft
@@ -144,6 +175,11 @@
     display: grid;
     grid-template-columns: repeat(var(--columns), 1fr);
     grid-template-rows: repeat(var(--columns), 1fr);
-    border: 1px solid black;
+    border: 1px solid #eee;
+  }
+
+  .status {
+    margin-bottom: 20px;
+    font-weight: bold;
   }
 </style>

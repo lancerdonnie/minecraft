@@ -1,13 +1,22 @@
+import { nanoid } from 'nanoid';
+import testData from './testData';
+let f = false;
+
 export const getCells = (bombs, boardSize) => {
   const numbers = random(bombs, boardSize);
-  return Array.from(Array(boardSize)).map((_, i) => {
+  const cells = Array.from(Array(boardSize)).map((_, i) => {
     return {
       index: i,
       isBomb: numbers.includes(i),
       value: 0,
       clicked: false,
+      key: nanoid(),
     };
   });
+
+  if (!f) return cells;
+  f = true;
+  return testData;
 };
 
 export const random = (bombs, boardSize) => {
