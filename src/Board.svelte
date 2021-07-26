@@ -55,7 +55,7 @@
     totalClicked = boardSize - bombs;
     won = false;
     uncovered = 0;
-    cells = getAllCells(bombs, boardSize);
+    cells = getAllCells(bombs, boardSize, board);
   };
 </script>
 

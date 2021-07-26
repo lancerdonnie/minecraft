@@ -33,6 +33,7 @@ export const getAllCells = (bombs, bSize, width) => {
     isBomb: numbers.includes(i),
     value: 0,
     clicked: false,
+    flagged: false,
     key: nanoid(),
   }));
 

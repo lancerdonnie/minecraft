@@ -8,15 +8,19 @@
   export let uncovered;
   export let size;
 
-  let flagged = false;
   let badFlag = null;
+
+  const incrementClick = (cell) => {
+    cell.clicked = true;
+    uncovered++;
+    cells = cells;
+  };
 
   const handleEmptySpace = (i) => {
     if (!cells[i]) return;
     if (cells[i].clicked) return;
 
-    cells[i].clicked = true;
-    uncovered++;
+    incrementClick(cells[i]);
 
     if (cells[i].value || cells[i].isBomb) return;
 
@@ -30,17 +34,78 @@
     handleEmptySpace(cells[i]?.bottomLeft?.index);
   };
 
+  const handleClickedValue = (i) => {
+    const top = cells[i]?.top;
+    const bottom = cells[i]?.bottom;
+    const left = cells[i]?.left;
+    const right = cells[i]?.right;
+    const bottomRight = cells[i]?.bottomRight;
+    const topRight = cells[i]?.topRight;
+    const topLeft = cells[i]?.topLeft;
+    const bottomLeft = cells[i]?.bottomLeft;
+
+    if (top && !top.isBomb) {
+      if (!top.value) handleEmptySpace(top.index);
+      else incrementClick(top);
+    }
+    if (bottom && !bottom.isBomb) {
+      if (!bottom.value) handleEmptySpace(bottom.index);
+      else incrementClick(bottom);
+    }
+    if (left && !left.isBomb) {
+      if (!left.value) handleEmptySpace(left.index);
+      else incrementClick(left);
+    }
+    if (right && !right.isBomb) {
+      if (!right.value) handleEmptySpace(right.index);
+      else incrementClick(right);
+    }
+    if (bottomRight && !bottomRight.isBomb) {
+      if (!bottomRight.value) handleEmptySpace(bottomRight.index);
+      else incrementClick(bottomRight);
+    }
+    if (topRight && !topRight.isBomb) {
+      if (!topRight.value) handleEmptySpace(topRight.index);
+      else incrementClick(topRight);
+    }
+    if (topLeft && !topLeft.isBomb) {
+      if (!topLeft.value) handleEmptySpace(topLeft.index);
+      else incrementClick(topLeft);
+    }
+    if (bottomLeft && !bottomLeft.isBomb) {
+      if (!bottomLeft.value) handleEmptySpace(bottomLeft.index);
+      else incrementClick(bottomLeft);
+    }
+  };
+
+  const handleNumberClicked = () => {
+    const val = [
+      cell?.top?.flagged,
+      cell?.bottom?.flagged,
+      cell?.left?.flagged,
+      cell?.right?.flagged,
+      cell?.bottomRight?.flagged,
+      cell?.topRight?.flagged,
+      cell?.topLeft?.flagged,
+      cell?.bottomLeft?.flagged,
+    ].filter(Boolean).length;
+
+    if (cell.value !== val) return;
+    handleClickedValue(cell.index);
+  };
+
   const handleClick = () => {
     if (cell.isBomb) {
       gameOver = true;
       badFlag = cell.index;
       return;
     }
-    if (!cell.value) {
+    if (cell.clicked) {
+      handleNumberClicked();
+    } else if (!cell.value) {
       handleEmptySpace(cell.index);
     } else {
-      cell.clicked = true;
-      uncovered++;
+      incrementClick(cell);
     }
 
     if (uncovered >= totalClicked) {
@@ -51,14 +116,14 @@
 
   const handleContextClick = () => {
     if (cell.clicked) return;
-    flagged = !flagged;
-    if (flagged) minesLeft--;
+    cell.flagged = !cell.flagged;
+    if (cell.flagged) minesLeft--;
     else minesLeft++;
   };
 </script>
 
 <div
-  on:click|once={handleClick}
+  on:click={handleClick}
   on:contextmenu|preventDefault={handleContextClick}
   class="cell"
   class:clicked={cell.clicked}
@@ -74,7 +139,7 @@
   <img
     alt="flag"
     src="flag.png"
-    class:flagged={(flagged || (gameOver && cell.isBomb)) && !badFlag}
+    class:flagged={(cell.flagged || (gameOver && cell.isBomb)) && !badFlag}
   />
   <img alt="mine" src="mine.png" class:badFlag />
 </div>
