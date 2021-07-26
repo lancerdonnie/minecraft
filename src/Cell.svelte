@@ -172,6 +172,7 @@
     width: var(--size);
     height: var(--size);
     cursor: pointer;
+    position: relative;
   }
   .clicked {
     background-color: white;
