@@ -10,16 +10,18 @@
 
   let badFlag = null;
 
-  const incrementClick = (cell) => {
-    cell.clicked = true;
-    uncovered++;
-    cells = cells;
-  };
+  // const incrementClick = (cell) => {
+  //   cell.clicked = true;
+  //   uncovered++;
+  //   cells = cells;
+  // };
 
   const handleEmptySpace = (i) => {
-    if (!cells[i] || cells[i].clicked) return;
+    if (!cells[i]) return;
+    if (cells[i].clicked) return;
 
-    incrementClick(cells[i]);
+    cells[i].clicked = true;
+    uncovered++;
 
     if (cells[i].value || cells[i].isBomb) return;
 
@@ -43,38 +45,71 @@
     const topLeft = cells[i]?.topLeft;
     const bottomLeft = cells[i]?.bottomLeft;
 
-    if (top && !top.isBomb) {
+    if (top && !top.flagged && !top.clicked) {
       if (!top.value) handleEmptySpace(top.index);
-      else incrementClick(top);
+      else {
+        // incrementClick(top);
+        top.clicked = true;
+        uncovered++;
+      }
     }
-    if (bottom && !bottom.isBomb) {
+    if (bottom && !bottom.flagged && !bottom.clicked) {
       if (!bottom.value) handleEmptySpace(bottom.index);
-      else incrementClick(bottom);
+      else {
+        // incrementClick(bottom);
+        bottom.clicked = true;
+        uncovered++;
+      }
     }
-    if (left && !left.isBomb) {
+    if (left && !left.flagged && !left.clicked) {
       if (!left.value) handleEmptySpace(left.index);
-      else incrementClick(left);
+      else {
+        // incrementClick(left);
+        left.clicked = true;
+        uncovered++;
+      }
     }
-    if (right && !right.isBomb) {
+    if (right && !right.flagged && !right.clicked) {
       if (!right.value) handleEmptySpace(right.index);
-      else incrementClick(right);
+      else {
+        // incrementClick(right);
+        right.clicked = true;
+        uncovered++;
+      }
     }
-    if (bottomRight && !bottomRight.isBomb) {
+    if (bottomRight && !bottomRight.flagged && !bottomRight.clicked) {
       if (!bottomRight.value) handleEmptySpace(bottomRight.index);
-      else incrementClick(bottomRight);
+      else {
+        // incrementClick(bottomRight);
+        bottomRight.clicked = true;
+        uncovered++;
+      }
     }
-    if (topRight && !topRight.isBomb) {
+    if (topRight && !topRight.flagged && !topRight.clicked) {
       if (!topRight.value) handleEmptySpace(topRight.index);
-      else incrementClick(topRight);
+      else {
+        // incrementClick(topRight);
+        topRight.clicked = true;
+        uncovered++;
+      }
     }
-    if (topLeft && !topLeft.isBomb) {
+    if (topLeft && !topLeft.flagged && !topLeft.clicked) {
       if (!topLeft.value) handleEmptySpace(topLeft.index);
-      else incrementClick(topLeft);
+      else {
+        // incrementClick(topLeft);
+        topLeft.clicked = true;
+        uncovered++;
+      }
     }
-    if (bottomLeft && !bottomLeft.isBomb) {
+    if (bottomLeft && !bottomLeft.flagged && !bottomLeft.clicked) {
       if (!bottomLeft.value) handleEmptySpace(bottomLeft.index);
-      else incrementClick(bottomLeft);
+      else {
+        // incrementClick(bottomLeft);
+        bottomLeft.clicked = true;
+        uncovered++;
+      }
     }
+    cells = cells;
   };
 
   const handleNumberClicked = () => {
@@ -104,9 +139,12 @@
     } else if (!cell.value) {
       handleEmptySpace(cell.index);
     } else {
-      incrementClick(cell);
+      // incrementClick(cell);
+      cell.clicked = true;
+      uncovered++;
     }
-
+    // console.log('uncovered', uncovered);
+    // console.table(cells.map(({ index, clicked }) => ({ index, clicked })));
     if (uncovered >= totalClicked) {
       gameOver = true;
       won = true;
