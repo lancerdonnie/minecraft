@@ -17,8 +17,7 @@
   };
 
   const handleEmptySpace = (i) => {
-    if (!cells[i]) return;
-    if (cells[i].clicked) return;
+    if (!cells[i] || cells[i].clicked) return;
 
     incrementClick(cells[i]);
 
