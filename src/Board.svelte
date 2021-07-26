@@ -1,6 +1,6 @@
 <script>
   import Cell from './Cell.svelte';
-  import { getCells, getlocal } from './lib';
+  import { getAllCells, getlocal } from './lib';
 
   let size = getlocal('cell') ?? 40;
   let show = false;
@@ -12,94 +12,7 @@
   let gameOver = false,
     won = false,
     uncovered = 0;
-  let cells = getCells(bombs, boardSize);
-  cells.forEach((e) => e.isBomb && calculateNumber(e.index));
-
-  function calculateNumber(i) {
-    const right = cells[i + 1];
-    const top = cells[i - board];
-    const left = cells[i - 1];
-    const bottom = cells[i + board];
-    const bottomRight = cells[i + 1 + board];
-    const bottomLeft = cells[i - 1 + board];
-    const topRight = cells[i + 1 - board];
-    const topLeft = cells[i - 1 - board];
-
-    //top left
-    if (i === 0) {
-      right.value++;
-      bottom.value++;
-      bottomRight.value++;
-      return;
-    }
-    //top right
-    if (i === board - 1) {
-      left.value++;
-      bottom.value++;
-      bottomLeft.value++;
-      return;
-    }
-    // bottom left
-    if (i === boardSize - board) {
-      top.value++;
-      right.value++;
-      topRight.value++;
-      return;
-    }
-    // bottom right
-    if (i === boardSize - 1) {
-      top.value++;
-      left.value++;
-      topLeft.value++;
-      return;
-    }
-    //top
-    if (i < board) {
-      bottom.value++;
-      left.value++;
-      right.value++;
-      bottomLeft.value++;
-      bottomRight.value++;
-      return;
-    }
-    //bottom
-    if (i >= boardSize - board) {
-      top.value++;
-      left.value++;
-      right.value++;
-      topLeft.value++;
-      topRight.value++;
-      return;
-    }
-    //left
-    if (i % board === 0) {
-      top.value++;
-      bottom.value++;
-      right.value++;
-      bottomRight.value++;
-      topRight.value++;
-      return;
-    }
-    //right
-    if ((i + 1) % board === 0) {
-      top.value++;
-      bottom.value++;
-      left.value++;
-      topLeft.value++;
-      bottomLeft.value++;
-      return;
-    }
-
-    // any
-    top.value++;
-    bottom.value++;
-    left.value++;
-    right.value++;
-    bottomRight.value++;
-    topRight.value++;
-    topLeft.value++;
-    bottomLeft.value++;
-  }
+  let cells = getAllCells(bombs, boardSize, board);
 
   const start = (b, m) => {
     board = b;
@@ -110,8 +23,7 @@
     gameOver = false;
     won = false;
     uncovered = 0;
-    cells = getCells(bombs, boardSize);
-    cells.forEach((e) => e.isBomb && calculateNumber(e.index));
+    cells = getAllCells(bombs, boardSize, board);
   };
 
   const handleBoardClick = (e) => {
@@ -143,8 +55,7 @@
     totalClicked = boardSize - bombs;
     won = false;
     uncovered = 0;
-    cells = getCells(bombs, boardSize);
-    cells.forEach((e) => e.isBomb && calculateNumber(e.index));
+    cells = getAllCells(bombs, boardSize);
   };
 </script>
 
@@ -195,8 +106,6 @@
         bind:gameOver
         bind:won
         bind:cells
-        bind:board
-        bind:boardSize
         bind:totalClicked
         bind:uncovered
       />
